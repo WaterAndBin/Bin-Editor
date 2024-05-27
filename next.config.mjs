@@ -1,14 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    /* 重定向 */
-    async redirects() {
-        return [
-            {
-                source: '/',
-                destination: '/main',
-                permanent: false, // 设置为 true 表示 301 永久重定向，false 表示 307 临时重定向  
-            },
-        ];
+    images: {
+        dangerouslyAllowSVG: true,
+        contentDispositionType: 'attachment',
+        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     },
 };
 
