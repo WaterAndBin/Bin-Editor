@@ -23,7 +23,7 @@ export const editorButton: EditorButton[] = [
   {
     name: 'editor-bold.svg',
     title: '加粗',
-    actions: 'strong'
+    actions: 'STRONG'
   },
   {
     name: 'editor-italic.svg',
