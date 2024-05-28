@@ -9,7 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 function EditorMain(): React.ReactElement {
   const editorRef = useRef<HTMLDivElement>(null);
   /* 测试数据 */
-  const [value, setValue] = useState<string>('<p>你好，<strong>世界</strong>，这个情况<strong>怎么说</strong>不是很好</p>');
+  const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
+  // const [value, setValue] = useState<string>('<p>你好，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
 
   /* 节点dom，具体是绑定哪个节点 */
   // const [editorNode, setEditorNode] = useState<Element | null>(null);
@@ -91,16 +92,16 @@ function EditorMain(): React.ReactElement {
   }, []);
 
   return (
-    <div className="flex justify-center mt-10 box-border select-none">
+    <div className="flex justify-center mt-10 box-border">
       <div className="w-[56rem] border-default text-2xl box-border">
         {/* 头部 */}
-        <div className="grid grid-flow-col-dense h-[4rem] border-b-[3px] border-sloid border-black">
+        <div className="grid grid-flow-col-dense h-[4rem] border-b-[3px] border-sloid border-black select-none">
           {editorButton.map((items, index) => (
             <div className="w-full grid justify-center" key={index}>
               <div
                 className="flex-default flex-col my-1 px-3 cursor-pointer hover:bg-gray-300 mix-blend-difference"
                 onClick={() => {
-                  handleSelection(editorNode.current, items.actions);
+                  handleSelection(editorNode.current, items.actions, editorRef);
                 }}
               >
                 <Image src={'/svg/' + items.name} alt={items.title} width={26} height={16} priority></Image>
