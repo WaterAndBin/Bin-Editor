@@ -1,64 +1,30 @@
 'use client';
 
 import { editorButton } from '@/utils/editorDefaultButton';
-import handleSelection from '@/utils/handleSelection';
-import setMouseStart from '@/utils/setMouseStart';
+import { EditorClass } from '@/utils/EditorUtils';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import './index.css';
 
 function EditorMain(): React.ReactElement {
   const editorRef = useRef<HTMLDivElement>(null);
   /* 测试数据 */
-  const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
+  // const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
   // const [value, setValue] = useState<string>('<p>你好，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
+  const [value, setValue] = useState<string>('<p>h<strong>allo,wor</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
 
   /* 节点dom，具体是绑定哪个节点 */
-  // const [editorNode, setEditorNode] = useState<Element | null>(null);
   const editorNode = useRef<Element | null>(null);
-
-  /**
-   * 插入空的p标签
-   */
-  const insertP = (): void => {
-    /* 判断里面是否有节点 */
-    if (editorRef.current?.children.length == 0) {
-      const newElement = document.createElement('p');
-      newElement.appendChild(document.createElement('br'));
-      editorRef.current?.appendChild(newElement);
-      /* 重新设置节点 */
-      editorNode.current = newElement;
-    }
-  };
-
-  /**
-   * 按下enter键
-   */
-  const handleOnkeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.code == 'Enter') {
-      event.preventDefault();
-      const newElement = document.createElement('p');
-      newElement.appendChild(document.createElement('br'));
-      editorRef.current?.appendChild(newElement);
-      /* 设置鼠标位置 */
-      setMouseStart(newElement);
-      /* 重新设置节点 */
-      editorNode.current = newElement;
-    }
-  };
-
-  /**
-   * 鼠标点击
-   * @param _Dom dom节点
-   */
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-    editorNode.current = event.target as Element;
-    // console.log('鼠标点击了，节点是');
-    // console.log(editorNode.current);
-  };
+  const editorClass = useRef<EditorClass | undefined>(undefined);
 
   useEffect(() => {
+    editorClass.current = new EditorClass({
+      editorRef,
+      editorNode
+    });
+
     /* 先插入空的p标签 */
-    insertP();
+    editorClass.current.checkEditorMain();
     /* 对该元素身上绑定观察者 */
     const observer = new MutationObserver((mutations): void => {
       mutations.forEach((mutation) => {
@@ -79,7 +45,7 @@ function EditorMain(): React.ReactElement {
         if (mutation.removedNodes.length > 0 && editorRef) {
           // 当有节点被移除时，检查editor是否没有子节点
           if (editorRef.current?.firstChild === null) {
-            insertP();
+            editorClass.current?.checkEditorMain();
           }
         }
       });
@@ -90,21 +56,21 @@ function EditorMain(): React.ReactElement {
     const options = { attributes: true, childList: true, subtree: true };
     observer.observe(document.getElementById('editor') as Node, options);
   }, []);
-
   return (
     <div className="flex justify-center mt-10 box-border">
       <div className="w-[56rem] border-default text-2xl box-border">
         {/* 头部 */}
         <div className="grid grid-flow-col-dense h-[4rem] border-b-[3px] border-sloid border-black select-none">
+          {/* 小标题 */}
           {editorButton.map((items, index) => (
             <div className="w-full grid justify-center" key={index}>
               <div
                 className="flex-default flex-col my-1 px-3 cursor-pointer hover:bg-gray-300 mix-blend-difference"
                 onClick={() => {
-                  handleSelection(editorNode.current, items.actions, editorRef);
+                  editorClass.current?.setAttribute(items.actions, items.execute);
                 }}
               >
-                <Image src={'/svg/' + items.name} alt={items.title} width={26} height={16} priority></Image>
+                <Image src={'/svg/' + items.name} alt={items.title} width={0} height={0} className="w-6 h-auto" priority></Image>
                 <span className="text-base">{items.title}</span>
               </div>
             </div>
@@ -117,10 +83,7 @@ function EditorMain(): React.ReactElement {
           contentEditable={true}
           className="editor-box box-border min-h-[35rem] w-full cursor-text overflow-hidden p-3 outline-0 select-all"
           onKeyDown={(event) => {
-            handleOnkeyDown(event);
-          }}
-          onMouseDown={(event) => {
-            handleOnMouseDown(event);
+            editorClass.current?.handleOnkeyDown(event);
           }}
           dangerouslySetInnerHTML={{ __html: value }}
         ></div>
