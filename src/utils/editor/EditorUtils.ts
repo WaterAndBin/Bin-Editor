@@ -131,5 +131,6 @@ export class EditorClass {
     // if ($ele) {
     //   $ele.createEle();
     // }
+    this.checkEditorMain();
   }
 }

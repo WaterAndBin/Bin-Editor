@@ -1,7 +1,7 @@
 'use client';
 
-import { editorButton } from '@/utils/editorDefaultButton';
-import { EditorClass } from '@/utils/EditorUtils';
+import { editorButton } from '@/utils/editor/editorDefaultButton';
+import { EditorClass } from '@/utils/editor/EditorUtils';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
