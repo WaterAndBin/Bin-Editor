@@ -1,5 +1,6 @@
 import { type Ele } from '@/types/ele';
 import { type AttributeType } from './editorDefaultButton';
+import { setRange } from './common';
 
 interface EditorClassProps {
   editorRef: React.RefObject<HTMLDivElement>;
@@ -24,26 +25,6 @@ export class EditorClass {
   }
 
   /**
-   * 全新设置选区
-   * @param element 需要重新设置选区的元素，一般都是第一个位置
-   * @param all 是否需要全部
-   * @param first 第几位开始 默认0
-   * @param end 第几位结束 默认0
-   */
-  setRange(element: Element | ChildNode, first?: number, end?: number): void {
-    const selection = window.getSelection();
-    if (selection) {
-      // 清除所有的选区
-      selection.removeAllRanges();
-      // 创建新的选区
-      const range = document.createRange();
-      range.setStart(element, first ?? 0); // 将光标设置在第一个子节点的开始
-      range.setEnd(element, end ?? 0); // 设置选区结束点在相同位置
-      selection.addRange(range);
-    }
-  }
-
-  /**
    * 获取一个新的P标签
    * @example <p><br/></p>
    */
@@ -64,9 +45,7 @@ export class EditorClass {
       /* 如果里面有节点的话，就重新进行定位selection */
       const children = this.editorRef.current?.lastChild;
       if (children) {
-        this.setRange(children, children.childNodes.length, children.childNodes.length);
-        console.log('======');
-        console.log(children);
+        setRange(children, children.childNodes.length, children.childNodes.length);
         this.setEditorNode(children);
       }
     }
@@ -91,7 +70,7 @@ export class EditorClass {
     const newElement = this.getPDocument();
     // 向父盒子里面push子元素
     this.editorRef.current?.appendChild(newElement);
-    this.setRange(newElement);
+    setRange(newElement);
     this.setEditorNode(newElement);
   }
 
@@ -105,32 +84,14 @@ export class EditorClass {
   }
 
   /**
-   * 查找最顶层的节点
-   */
-  findTopNode(): void {
-    const selection = window.getSelection();
-    console.log(selection);
-    // const range = selection?.getRangeAt(0);
-    // console.log(range);
-    // console.log(this.editorRef);
-  }
-
-  /**
    * 设置新的样式
    *
    * 例如 strong、u、s
    * @param $document
    */
   setAttribute($document: AttributeType, $ele?: Ele): void {
-    this.findTopNode();
-    // const handler = AttributeType[$document];
-    // if (handler) {
-    //   console.log(handler);
-    // }
-
-    // if ($ele) {
-    //   $ele.createEle();
-    // }
-    this.checkEditorMain();
+    if (this.editorRef.current) {
+      $ele?.insertEle(this.editorRef.current);
+    }
   }
 }

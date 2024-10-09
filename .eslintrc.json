@@ -38,7 +38,8 @@
     "no-lonely-if": "off", // 取消if但是没有else
     "eqeqeq": "off", // 取消用 ==,
     "array-callback-return": "off",
-    "import/named": "off" // 禁用 import/named 规则
+    "import/named": "off", // 禁用 import/named 规则
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   "overrides": [
     {

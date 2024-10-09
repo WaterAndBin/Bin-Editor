@@ -11,7 +11,7 @@ function EditorMain(): React.ReactElement {
   /* 测试数据 */
   // const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
   // const [value, setValue] = useState<string>('<p>你好，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
-  const [value, setValue] = useState<string>('<p>h<strong>allo,wor</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
+  const [value, setValue] = useState<string>('<p>h<strong>a<u>llo,wo</u>r</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
 
   /* 节点dom，具体是绑定哪个节点 */
   const editorNode = useRef<Element | null>(null);
