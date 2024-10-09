@@ -1,3 +1,10 @@
 export interface Ele {
-  createEle: () => void;
+  /**
+   * 创建元素
+   */
+  createEle: () => T;
+  /**
+   * 插入元素
+   */
+  insertEle: (body: HTMLDivElement) => T;
 }
