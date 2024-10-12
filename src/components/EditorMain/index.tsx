@@ -5,16 +5,35 @@ import { EditorClass } from '@/utils/editor/EditorUtils';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
+import EditorImage from '../EditorImage';
+import { NewImage } from '@/utils/editor/menus/image';
 
 function EditorMain(): React.ReactElement {
+  /**
+   * 身体 dom
+   */
   const editorRef = useRef<HTMLDivElement>(null);
+  /**
+   * 图片 dom
+   */
+  const imageRef = useRef(null);
+  /**
+   * 图片的实例对象
+   */
+  const newImage = new NewImage();
+
   /* 测试数据 */
   // const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
   // const [value, setValue] = useState<string>('<p>你好，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
-  const [value, setValue] = useState<string>('<p>h<strong>a<u>llo,wo</u>r</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
+  const [value, _] = useState<string>('<p>h<strong>a<u>llo,wo</u>r</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
 
-  /* 节点dom，具体是绑定哪个节点 */
+  /**
+   * 节点dom，具体是绑定哪个节点
+   */
   const editorNode = useRef<Element | null>(null);
+  /**
+   * 存储实例对象
+   */
   const editorClass = useRef<EditorClass | undefined>(undefined);
 
   useEffect(() => {
@@ -40,6 +59,14 @@ function EditorMain(): React.ReactElement {
               });
               addedNode.dispatchEvent(event);
             }
+            if (addedNode.nodeName === 'IMG') {
+              // (addedNode as HTMLElement).remove();
+              const imageBase = addedNode as HTMLImageElement;
+              if (imageBase.src.includes('data:image')) {
+                //   console.log(imageBase.src.includes('data:image'));
+                newImage.copyEvent(imageBase.src);
+              }
+            }
           }
         }
         if (mutation.removedNodes.length > 0 && editorRef) {
@@ -56,8 +83,10 @@ function EditorMain(): React.ReactElement {
     const options = { attributes: true, childList: true, subtree: true };
     observer.observe(document.getElementById('editor') as Node, options);
   }, []);
+
   return (
     <div className="flex justify-center mt-10 box-border">
+      <EditorImage ref={imageRef} editorRef={editorRef}></EditorImage>
       <div className="w-[56rem] border-default text-2xl box-border">
         {/* 头部 */}
         <div className="grid grid-flow-col-dense h-[4rem] border-b-[3px] border-sloid border-black select-none">
@@ -67,7 +96,7 @@ function EditorMain(): React.ReactElement {
               <div
                 className="flex-default flex-col my-1 px-3 cursor-pointer hover:bg-gray-300 mix-blend-difference"
                 onClick={() => {
-                  editorClass.current?.setAttribute(items.actions, items.execute);
+                  editorClass.current?.setAttribute(items.actions, items.execute, imageRef);
                 }}
               >
                 <Image src={'/svg/' + items.name} alt={items.title} width={0} height={0} className="w-6 h-auto" priority></Image>

@@ -5,3 +5,9 @@ p:hover {
 hr {
   @apply my-2;
 }
+
+.editor-img {
+  max-width: 25%;
+  height: auto;
+  @apply inline-block;
+}

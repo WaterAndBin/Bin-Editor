@@ -1,6 +1,6 @@
 import { type Ele } from '@/types/ele';
 import { Line } from './menus/line';
-import { EditorClass } from './EditorUtils';
+import { NewImage } from './menus/image';
 
 export enum AttributeType {
   STRONG = 'STRONG',
@@ -72,7 +72,8 @@ export const editorButton: EditorButton[] = [
   {
     name: 'editor-image.svg',
     title: '图像',
-    actions: AttributeType.IMAGE
+    actions: AttributeType.IMAGE,
+    execute: new NewImage()
   }
 ];
 

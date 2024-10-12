@@ -87,11 +87,13 @@ export class EditorClass {
    * 设置新的样式
    *
    * 例如 strong、u、s
-   * @param $document
+   * @param $document 元素本身 例如 strong
+   * @param $ele 元素的实例对象
+   * @param _element 其他节点
    */
-  setAttribute($document: AttributeType, $ele?: Ele): void {
+  setAttribute($document: AttributeType, $ele: Ele | undefined, _node: React.RefObject<HTMLDivElement>): void {
     if (this.editorRef.current) {
-      $ele?.insertEle(this.editorRef.current);
+      $ele?.insertEle(this.editorRef.current, _node);
     }
   }
 }
