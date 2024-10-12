@@ -1,4 +1,4 @@
-import { changeState } from '@/store/login';
+import { changeState } from '@/store/modules/login';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,7 +11,9 @@ interface State {
 }
 
 function Test(): React.ReactElement {
-  const asd = useSelector((state: State) => state.login);
+  const asd = useSelector((state: State) => {
+    return state.login;
+  });
   const dispatch = useDispatch();
 
   return (
@@ -19,7 +21,7 @@ function Test(): React.ReactElement {
       hallo,world
       <button
         onClick={() => {
-          dispatch(changeState(3));
+          dispatch(changeState(222));
         }}
       >
         测试
