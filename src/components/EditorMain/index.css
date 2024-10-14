@@ -3,7 +3,7 @@ p:hover {
 }
 
 hr {
-  @apply my-2;
+  @apply my-2 select-none pointer-events-none;
 }
 
 .editor-img {

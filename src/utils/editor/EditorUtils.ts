@@ -46,7 +46,7 @@ export class EditorClass {
       const children = this.editorRef.current?.lastChild;
       if (children) {
         setRange(children, children.childNodes.length, children.childNodes.length);
-        this.setEditorNode(children);
+        // this.setEditorNode(children);
       }
     }
   }
@@ -57,9 +57,12 @@ export class EditorClass {
    */
   handleOnkeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.code == 'Enter') {
-      console.log('按下了');
-      event.preventDefault();
-      this.setP();
+      console.log('按下了enter键盘事件');
+      /* 判断主体里面有没有节点 */
+      // if (this.editorRef.current?.children.length == 0) {
+      //   event.preventDefault();
+      //   this.setP();
+      // }
     }
   }
 
@@ -71,7 +74,7 @@ export class EditorClass {
     // 向父盒子里面push子元素
     this.editorRef.current?.appendChild(newElement);
     setRange(newElement);
-    this.setEditorNode(newElement);
+    // this.setEditorNode(newElement);
   }
 
   /**
