@@ -29,6 +29,7 @@ export class Line implements Ele {
       }
       const newEle = this.createEle();
       const hr = document.createElement('hr');
+      hr.contentEditable = 'false';
 
       /* 插入hr以及p标签 */
       body.insertBefore(newEle, topResult.nextSibling);
