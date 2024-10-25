@@ -7,8 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 import './index.css';
 import EditorImage from '../EditorImage';
 import { NewImage } from '@/utils/editor/menus/image';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/dark.css';
 
 function EditorMain(): React.ReactElement {
+  hljs.highlightAll();
+
   /**
    * 身体 dom
    */
@@ -25,7 +29,9 @@ function EditorMain(): React.ReactElement {
   /* 测试数据 */
   // const [value, setValue] = useState<string>('<p><strong>你好</strong>，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
   // const [value, setValue] = useState<string>('<p>你好，<strong>世<i>界你好啊<u>啊啊</u></i></strong>，这个情况<strong>怎么说</strong>不是很好</p>');
-  const [value, _] = useState<string>('<p>h<strong>a<u>llo,wo</u>r</strong>ld</p><p>h<strong>allo,wor</strong>ld</p>');
+  const [value, setValue] = useState<string>(
+    '<p>h<strong>a<u>llo,wo</u>r</strong>ld</p><p>h<strong>allo,wor</strong>ld</p><pre><code className="js">console.log(abc)</code><code>console.log(abc)</code></pre>'
+  );
 
   /**
    * 节点dom，具体是绑定哪个节点
@@ -37,6 +43,7 @@ function EditorMain(): React.ReactElement {
   const editorClass = useRef<EditorClass | undefined>(undefined);
 
   useEffect(() => {
+    highlightCode();
     editorClass.current = new EditorClass({
       editorRef,
       editorNode
@@ -83,6 +90,16 @@ function EditorMain(): React.ReactElement {
     const options = { attributes: true, childList: true, subtree: true };
     observer.observe(document.getElementById('editor') as Node, options);
   }, []);
+
+  /**
+   * 渲染代码块颜色
+   */
+  const highlightCode = (): void => {
+    const nodes = document.querySelectorAll('pre code');
+    nodes.forEach((node) => {
+      hljs.highlightBlock(node as HTMLElement);
+    });
+  };
 
   return (
     <div className="flex justify-center mt-10 box-border">

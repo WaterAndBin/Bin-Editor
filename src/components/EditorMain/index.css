@@ -6,6 +6,17 @@ hr {
   @apply my-2;
 }
 
+pre {
+  padding: 0.5rem;
+  background-color: #303030;
+}
+
+pre code {
+  padding: 0.2rem !important;
+  font-size: 1rem !important;
+  line-height: 1.25rem !important;
+}
+
 .editor-img {
   max-width: 25%;
   height: auto;

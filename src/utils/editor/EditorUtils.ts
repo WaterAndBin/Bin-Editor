@@ -58,8 +58,8 @@ export class EditorClass {
   handleOnkeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.code == 'Enter') {
       console.log('按下了');
-      event.preventDefault();
-      this.setP();
+      // event.preventDefault();
+      // this.setP();
     }
   }
 
